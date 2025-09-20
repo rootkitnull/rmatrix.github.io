@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JHSONDATA TMPSPLIT HACKER4 - Matrix</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: #000;
+            overflow: hidden;
+            font-family: 'Courier New', monospace;
+        }
+        
+        #matrix-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        
+        .header-container {
+            position: fixed;
+            top: 20px;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            z-index: 2;
+            overflow: hidden;
+        }
+        
+        .sliding-text {
+            position: absolute;
+            top: 0;
+            font-size: 14px;
+            font-weight: bold;
+            white-space: nowrap;
+            text-shadow: 0 0 10px currentColor;
+            animation: slideAcross 8s linear infinite;
+        }
+        
+        @keyframes slideAcross {
+            0% {
+                left: -100%;
+                opacity: 0;
+                transform: scale(0.8) rotateY(-15deg);
+            }
+            10% {
+                opacity: 1;
+                transform: scale(1) rotateY(0deg);
+            }
+            90% {
+                opacity: 1;
+                transform: scale(1) rotateY(0deg);
+            }
+            100% {
+                left: 100%;
+                opacity: 0;
+                transform: scale(0.8) rotateY(15deg);
+            }
+        }
+        
+        .rootkit-text {
+            position: fixed;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #ff0040;
+            text-shadow: 0 0 15px #ff0040;
+            z-index: 3;
+            pointer-events: none;
+            animation: rootkitPulse 2s ease-in-out;
+        }
+        
+        @keyframes rootkitPulse {
+            0% {
+                opacity: 0;
+                transform: scale(0.5);
+            }
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+        }
+    </style>
+</head>
+<body>
+    <canvas id="matrix-canvas"></canvas>
+    <div class="header-container">
+        <div class="sliding-text" id="sliding-text">JHSONDATA TMPSPLIT HACKER4</div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+        const slidingText = document.getElementById('sliding-text');
+
+        // Set canvas size
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        // Matrix characters
+        const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const charArray = chars.split('');
+
+        // Color arrays
+        const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff', '#ffa500', '#ff69b4', '#9370db', '#32cd32'];
+        const greenShades = ['#00ff00', '#39ff14', '#00ff41', '#00cc00', '#00aa00', '#008800'];
+
+        // Matrix variables
+        const fontSize = 14;
+        const columns = Math.floor(canvas.width / fontSize);
+        const drops = [];
+        const dropColors = [];
+        const dropSpeeds = [];
+
+        // Initialize drops
+        for (let i = 0; i < columns; i++) {
+            drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+            dropColors[i] = greenShades[Math.floor(Math.random() * greenShades.length)];
+            dropSpeeds[i] = Math.random() < 0.5 ? 0.5 : Math.random() * 2 + 0.5; // Random speed between 0.5 and 2.5
+        }
+
+        // Color phase management
+        let colorPhase = 'green'; // 'green' or 'random'
+        let phaseStartTime = Date.now();
+        let lastHeaderColorChange = Date.now();
+        let lastRootkitSpawn = Date.now();
+
+        function updateColorPhase() {
+            const currentTime = Date.now();
+            const elapsedTime = currentTime - phaseStartTime;
+
+            if (colorPhase === 'green' && elapsedTime > 120000) { // 2 minutes
+                colorPhase = 'random';
+                phaseStartTime = currentTime;
+                // Update all drops to new color scheme
+                for (let i = 0; i < dropColors.length; i++) {
+                    dropColors[i] = getRandomColor();
+                }
+            } else if (colorPhase === 'random' && elapsedTime > 60000) { // 1 minute
+                colorPhase = 'green';
+                phaseStartTime = currentTime;
+                // Update all drops to new color scheme
+                for (let i = 0; i < dropColors.length; i++) {
+                    dropColors[i] = getRandomColor();
+                }
+            }
+        }
+
+        function getRandomColor() {
+            if (colorPhase === 'green') {
+                return Math.random() < 0.85 ? 
+                    greenShades[Math.floor(Math.random() * greenShades.length)] :
+                    colors[Math.floor(Math.random() * colors.length)];
+            } else {
+                return Math.random() < 0.3 ? 
+                    greenShades[Math.floor(Math.random() * greenShades.length)] :
+                    colors[Math.floor(Math.random() * colors.length)];
+            }
+        }
+
+        function changeHeaderColor() {
+            const currentTime = Date.now();
+            if (currentTime - lastHeaderColorChange > 5000) { // 5 seconds
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                slidingText.style.color = randomColor;
+                lastHeaderColorChange = currentTime;
+            }
+        }
+
+        function spawnRootkit() {
+            const currentTime = Date.now();
+            if (currentTime - lastRootkitSpawn > 20000) { // 20 seconds
+                const rootkitElement = document.createElement('div');
+                rootkitElement.className = 'rootkit-text';
+                rootkitElement.textContent = 'rootkitnull';
+                rootkitElement.style.left = Math.random() * (window.innerWidth - 200) + 'px';
+                rootkitElement.style.top = Math.random() * (window.innerHeight - 100) + 100 + 'px';
+                
+                document.body.appendChild(rootkitElement);
+                
+                setTimeout(() => {
+                    if (rootkitElement.parentNode) {
+                        document.body.removeChild(rootkitElement);
+                    }
+                }, 2000);
+                
+                lastRootkitSpawn = currentTime;
+            }
+        }
+
+        function drawMatrix() {
+            // Semi-transparent black background for trail effect
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = fontSize + 'px Courier New';
+
+            for (let i = 0; i < drops.length; i++) {
+                // Randomly change color for some drops
+                if (Math.random() < 0.02) {
+                    dropColors[i] = getRandomColor();
+                }
+
+                const text = charArray[Math.floor(Math.random() * charArray.length)];
+                const x = i * fontSize;
+                const y = drops[i] * fontSize;
+
+                // Set color and draw character
+                ctx.fillStyle = dropColors[i];
+                ctx.fillText(text, x, y);
+
+                // Add glow effect for some characters
+                if (Math.random() < 0.1) {
+                    ctx.shadowColor = dropColors[i];
+                    ctx.shadowBlur = 10;
+                    ctx.fillText(text, x, y);
+                    ctx.shadowBlur = 0;
+                }
+
+                // Reset drop to top randomly
+                if (y > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                    dropColors[i] = getRandomColor();
+                    dropSpeeds[i] = Math.random() < 0.5 ? 0.5 : Math.random() * 2 + 0.5; // New random speed
+                }
+
+                drops[i] += dropSpeeds[i]; // Use variable speed
+            }
+        }
+
+        function animate() {
+            updateColorPhase();
+            changeHeaderColor();
+            spawnRootkit();
+            drawMatrix();
+            requestAnimationFrame(animate);
+        }
+
+        // Start animation
+        animate();
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            resizeCanvas();
+            const newColumns = Math.floor(canvas.width / fontSize);
+            
+            if (newColumns > columns) {
+                for (let i = columns; i < newColumns; i++) {
+                    drops[i] = Math.floor(Math.random() * canvas.height / fontSize);
+                    dropColors[i] = getRandomColor();
+                    dropSpeeds[i] = Math.random() < 0.5 ? 0.5 : Math.random() * 2 + 0.5;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
